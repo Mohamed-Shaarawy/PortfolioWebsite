@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mohamed El-shaarawy — Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { 400:'#a78bfa', 500:'#8347e6', 600:'#6d28d9', 900:'#2e1065' },
+            accent: { blue:'#4a9ef0', teal:'#2dd4a0' },
+            surface: { 900:'#0e1021', 800:'#171a2e', 700:'#252840', 600:'#3a4060' }
+          },
+          fontFamily: {
+            sans: ['Inter','system-ui','sans-serif'],
+            mono: ['JetBrains Mono','monospace'],
+          },
+          animation: {
+            'fade-up':'fadeUp .6s ease-out both',
+            'fade-in':'fadeIn .4s ease-out both',
+            },
+          keyframes: {
+            fadeUp:  { '0%':{opacity:'0',transform:'translateY(20px)'}, '100%':{opacity:'1',transform:'none'} },
+            fadeIn:  { '0%':{opacity:'0'}, '100%':{opacity:'1'} },
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    ::-webkit-scrollbar{width:6px}
+    ::-webkit-scrollbar-track{background:#0e1021}
+    ::-webkit-scrollbar-thumb{background:#252840;border-radius:3px}
+    ::-webkit-scrollbar-thumb:hover{background:#8347e6}
+
+    .gradient-text{
+      background:linear-gradient(135deg,#a78bfa 0%,#4a9ef0 50%,#2dd4a0 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+    .grid-bg{
+      background-image:
+        linear-gradient(rgba(131,71,230,.05) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(131,71,230,.05) 1px,transparent 1px);
+      background-size:64px 64px;
+    }
+    .glow   {box-shadow:0 0 40px rgba(131,71,230,.2)}
+    .glow-sm{box-shadow:0 0 20px rgba(131,71,230,.1)}
+    .nav-link::after{content:'';display:block;height:2px;width:0;background:#8347e6;transition:width .3s;border-radius:1px}
+    .nav-link:hover::after{width:100%}
+    .skill-badge{transition:transform .2s,box-shadow .2s}
+    .skill-badge:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(131,71,230,.3)}
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+    .reveal.visible{opacity:1;transform:none}
+    .video-wrap{background:linear-gradient(135deg,rgba(14,16,33,.92),rgba(23,26,46,.97))}
+  </style>
+</head>
+
+<body class="bg-surface-900 text-slate-200 font-sans antialiased">
+
+<!-- ═══ NAV ════════════════════════════════════════════════════ -->
+<header id="navbar" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+  <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="#hero" class="font-mono text-brand-400 font-medium text-lg hover:text-violet-300 transition-colors">&lt;Elshaarawy /&gt;</a>
+
+    <ul class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+      <li><a href="#about"    class="nav-link hover:text-slate-100 transition-colors">About</a></li>
+      <li><a href="#skills"   class="nav-link hover:text-slate-100 transition-colors">Skills</a></li>
+      <li><a href="#projects" class="nav-link hover:text-slate-100 transition-colors">Projects</a></li>
+      <li><a href="#contact"  class="nav-link hover:text-slate-100 transition-colors">Contact</a></li>
+    </ul>
+
+    <a href="resume.pdf" download
+       class="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+      </svg>Resume
+    </a>
+
+    <button id="menu-btn" class="md:hidden p-2 rounded-lg hover:bg-surface-700 transition-colors">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+  </nav>
+
+  <div id="mobile-menu" class="hidden md:hidden bg-surface-800 border-t border-surface-700 px-6 py-4">
+    <ul class="flex flex-col gap-4 text-sm font-medium text-slate-400">
+      <li><a href="#about"    onclick="closeMenu()" class="hover:text-slate-100 transition-colors block">About</a></li>
+      <li><a href="#skills"   onclick="closeMenu()" class="hover:text-slate-100 transition-colors block">Skills</a></li>
+      <li><a href="#projects" onclick="closeMenu()" class="hover:text-slate-100 transition-colors block">Projects</a></li>
+      <li><a href="#contact"  onclick="closeMenu()" class="hover:text-slate-100 transition-colors block">Contact</a></li>
+      <li><a href="resume.pdf" download class="text-brand-400 font-medium">Download Resume</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- ═══ HERO ════════════════════════════════════════════════════ -->
+<section id="hero" class="min-h-screen grid-bg relative flex items-center overflow-hidden">
+  <!-- ambient blobs -->
+  <div class="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none" style="background:rgba(131,71,230,.12)"></div>
+  <div class="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-3xl pointer-events-none" style="background:rgba(74,158,240,.08)"></div>
+
+  <div class="max-w-6xl mx-auto px-6 py-24 w-full flex flex-col lg:flex-row items-center gap-16">
+
+    <!-- text -->
+    <div class="flex-1 text-center lg:text-left">
+      <p class="inline-flex items-center gap-2 font-mono text-brand-400 text-sm mb-4 animate-fade-in">
+        <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+        Available for opportunities
+      </p>
+      <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-6 animate-fade-up" style="animation-delay:.1s">
+        Hi, I'm <span class="gradient-text">Mohamed Elshaarawy</span>
+      </h1>
+      <p class="text-xl md:text-2xl text-slate-400 font-light mb-4 animate-fade-up" style="animation-delay:.2s">
+        Game Programmer &amp; Software Engineer
+      </p>
+      <p class="text-slate-500 max-w-xl mx-auto lg:mx-0 leading-relaxed mb-10 animate-fade-up" style="animation-delay:.3s">
+        Fresh Graduate with a specialization in Video Game Programming at the University of Prince Edward Island.
+        Passionate about game development, and building immersive interactive experiences with experience in Backend development.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-up" style="animation-delay:.4s">
+        <a href="#projects"
+           class="px-8 py-3.5 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-xl transition-all hover:scale-105 hover:shadow-lg hover:shadow-brand-500/25">
+          View My Work
+        </a>
+        <a href="#contact"
+           class="px-8 py-3.5 border border-surface-600 hover:border-brand-500/50 text-slate-300 hover:text-white font-semibold rounded-xl transition-all hover:scale-105 hover:bg-surface-800">
+          Get In Touch
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-slate-600 text-xs animate-bounce">
+    <span>Scroll</span>
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══════════════════════════════════════════════════ -->
+<section id="about" class="py-24 bg-surface-800/50">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="reveal flex flex-col lg:flex-row gap-16 items-start">
+
+      <div class="flex-1">
+        <p class="font-mono text-brand-400 text-sm mb-3">01 // About Me</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Who I Am</h2>
+        <div class="space-y-4 text-slate-400 leading-relaxed">
+          <p>
+            I am a self-motivated and quick learner with a strong ability to adapt to modern
+            technologies, concepts, and dynamic situations.
+          </p>
+          <p>
+            I possess excellent analytical and problem-solving skills, coupled with effective
+            communication, interpersonal, and teamwork abilities.
+          </p>
+          <p>
+            Currently pursuing a Bachelor of Science in Computer Science with a specialization
+            in Video Game Programming at the University of Prince Edward Island. Fluent in both
+            English and Arabic.
+          </p>
+        </div>
+      </div>
+
+      <div class="flex-shrink-0 grid grid-cols-2 gap-4">
+        <div class="bg-surface-800 rounded-2xl p-6 text-center border border-surface-700 glow-sm">
+          <div class="text-3xl font-extrabold gradient-text mb-1">11</div>
+          <div class="text-xs text-slate-500 uppercase tracking-wider">Projects</div>
+        </div>
+        <div class="bg-surface-800 rounded-2xl p-6 text-center border border-surface-700 glow-sm">
+          <div class="text-3xl font-extrabold gradient-text mb-1">5</div>
+          <div class="text-xs text-slate-500 uppercase tracking-wider">Years Exp.</div>
+        </div>
+        <div class="bg-surface-800 rounded-2xl p-6 text-center border border-surface-700 glow-sm">
+          <div class="text-3xl font-extrabold gradient-text mb-1">20+</div>
+          <div class="text-xs text-slate-500 uppercase tracking-wider">Technologies</div>
+        </div>
+        <div class="bg-surface-800 rounded-2xl p-6 text-center border border-surface-700 glow-sm">
+          <div class="text-3xl font-extrabold gradient-text mb-1">∞</div>
+          <div class="text-xs text-slate-500 uppercase tracking-wider">Curiosity</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SKILLS ══════════════════════════════════════════════════ -->
+<section id="skills" class="py-24">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="reveal text-center mb-14">
+      <p class="font-mono text-brand-400 text-sm mb-3">02 // Skills</p>
+      <h2 class="text-3xl md:text-4xl font-bold text-white">What I Work With</h2>
+    </div>
+
+    <div class="reveal grid md:grid-cols-3 gap-8">
+
+      <!-- Languages -->
+      <div class="bg-surface-800 rounded-2xl p-6 border border-surface-700 hover:border-brand-500/30 transition-colors">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-9 h-9 bg-brand-500/10 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-white">Languages</h3>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">Python</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">Java</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">C++</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">C#</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">C</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">SQL</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">Kotlin</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">TypeScript</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">bash</span>
+        </div>
+      </div>
+
+      <!-- Frameworks & Tools -->
+      <div class="bg-surface-800 rounded-2xl p-6 border border-surface-700 hover:border-purple-500/30 transition-colors">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-9 h-9 bg-purple-500/10 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-white">Frameworks &amp; Tools</h3>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">Unity</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">Unreal Engine 5</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">OpenGL</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">QT</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">Maya</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">Android Studio</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">Firebase</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">Docker</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">GCP</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">Git / Perforce</span>
+        </div>
+      </div>
+
+      <!-- Techniques -->
+      <div class="bg-surface-800 rounded-2xl p-6 border border-surface-700 hover:border-teal-500/30 transition-colors">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-9 h-9 bg-teal-500/10 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18"/>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-white">Techniques</h3>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">Design Patterns</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">Shaders</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">Scene Optimization</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">Game Design Document</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">Game Engine Architecture</span>
+          <span class="skill-badge px-3 py-1.5 bg-surface-700 rounded-lg text-xs font-medium text-slate-300 border border-surface-600">Version Control</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROJECTS ════════════════════════════════════════════════ -->
+<section id="projects" class="py-24 bg-surface-800/30">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="reveal text-center mb-14">
+      <p class="font-mono text-brand-400 text-sm mb-3">03 // Projects</p>
+      <h2 class="text-3xl md:text-4xl font-bold text-white">Things I've Built</h2>
+      <p class="text-slate-400 mt-3 max-w-xl mx-auto">
+        Click the play button beside any project to watch a live demo.
+      </p>
+    </div>
+
+    <div class="space-y-10">
+
+      <!-- 1 ─ Solar System Simulation -->
+      <div class="reveal bg-surface-800 rounded-2xl border border-surface-700 hover:border-brand-500/40 overflow-hidden transition-colors glow-sm">
+        <div class="grid lg:grid-cols-2 min-h-[300px]">
+          <!-- info -->
+          <div class="p-8 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-4">
+                <span class="px-2.5 py-1 bg-brand-500/10 text-brand-400 text-xs font-mono rounded-md border border-brand-500/20">3D Simulation</span>
+                <span class="text-slate-600 text-xs">Apr – May 2024</span>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-3">Solar System Simulation</h3>
+              <p class="text-slate-400 text-sm leading-relaxed mb-5">
+                A 3D spaceship game built with OpenGL and C++ simulating solar system navigation with rotating planets and debris fields. Features a survival-based scoring system.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">OpenGL</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">C++</span>
+              </div>
+            </div>
+            <a href="https://github.com/Mooshaah/Solar-System-Spaceship" target="_blank" rel="noopener" class="flex items-center gap-2 text-sm font-medium text-brand-400 hover:text-violet-300 transition-colors w-fit">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+              GitHub
+            </a>
+          </div>
+          <!-- video -->
+          <div class="relative bg-surface-900 border-t lg:border-t-0 lg:border-l border-surface-700 overflow-hidden">
+            <video id="v1" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" src="videos/solar-system.mp4" preload="none" playsinline></video>
+            <div id="o1" class="absolute inset-0 video-wrap flex flex-col items-center justify-center cursor-pointer select-none" onclick="play('v1','o1','b1','p1','t1')">
+              <div class="absolute inset-0 bg-gradient-to-br from-violet-900/40 to-surface-900/70"></div>
+              <div class="relative z-10 flex flex-col items-center gap-3 group/p">
+                <div class="w-[68px] h-[68px] rounded-full border-2 border-brand-400 bg-brand-500/20 flex items-center justify-center pl-1 transition-all duration-300 group-hover/p:scale-110 group-hover/p:bg-brand-500/35 group-hover/p:shadow-xl group-hover/p:shadow-brand-500/30">
+                  <svg class="w-8 h-8 text-brand-300" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+                <span class="text-slate-200 text-sm font-semibold">Watch Demo</span>
+              </div>
+            </div>
+            <div id="b1" class="absolute bottom-0 inset-x-0 hidden items-center gap-3 px-4 py-3 bg-surface-900/85 backdrop-blur-sm border-t border-surface-700">
+              <button onclick="togglePlay('v1','b1','p1')" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg id="p1" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
+              <div class="flex-1 h-1.5 bg-surface-700 rounded-full cursor-pointer" onclick="seek(event,'v1','g1')"><div id="g1" class="h-full bg-brand-400 rounded-full w-0"></div></div>
+              <span id="t1" class="text-xs font-mono text-slate-500 w-10 text-right tabular-nums">0:00</span>
+              <button onclick="muteToggle('v1',this)" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 ─ Game Design Document (notion L / info R) -->
+      <div class="reveal bg-surface-800 rounded-2xl border border-surface-700 hover:border-purple-500/40 overflow-hidden transition-colors glow-sm">
+        <div class="grid lg:grid-cols-2 min-h-[300px]">
+          <!-- notion panel left -->
+          <div class="relative bg-surface-900 border-b lg:border-b-0 lg:border-r border-surface-700 overflow-hidden order-last lg:order-first">
+            <div class="absolute inset-0 bg-gradient-to-bl from-purple-900/40 to-surface-900/70"></div>
+            <!-- subtle grid pattern -->
+            <div class="absolute inset-0 opacity-10" style="background-image:linear-gradient(rgba(167,139,250,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(167,139,250,.3) 1px,transparent 1px);background-size:32px 32px"></div>
+            <div class="absolute inset-0 flex flex-col items-center justify-center gap-6 p-8">
+              <!-- notion "N" logo mark -->
+              <div class="w-16 h-16 rounded-2xl bg-white/5 border border-purple-500/30 flex items-center justify-center shadow-lg shadow-purple-500/10">
+                <svg class="w-9 h-9 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.14c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.448-.093-1.962-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.447-1.632z"/>
+                </svg>
+              </div>
+              <div class="text-center">
+                <p class="text-slate-300 text-sm font-medium mb-1">Full document on Notion</p>
+                <p class="text-slate-500 text-xs">Game systems · Story · Mechanics</p>
+              </div>
+              <a href="https://verdant-stick-b90.notion.site/154dded2f68f80919d5bd49488fe59a4?v=26f7fa54d0f64be0bd0b8403f79f22fd" target="_blank" rel="noopener"
+                 class="group flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-300 text-sm font-medium hover:bg-purple-500/25 hover:border-purple-400/50 hover:text-purple-200 transition-all duration-200">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.14c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.448-.093-1.962-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.447-1.632z"/>
+                </svg>
+                Open in Notion
+                <svg class="w-3.5 h-3.5 opacity-60 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+              </a>
+            </div>
+          </div>
+          <!-- info -->
+          <div class="p-8 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-4">
+                <span class="px-2.5 py-1 bg-purple-500/10 text-purple-400 text-xs font-mono rounded-md border border-purple-500/20">Game Design</span>
+                <span class="text-slate-600 text-xs">Nov – Dec 2024</span>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-3">Game Design Document (GDD)</h3>
+              <p class="text-slate-400 text-sm leading-relaxed mb-5">
+                Comprehensive GDD for an exploration/adventure game with survival mechanics, supernatural abilities, and chapter-based progression. Designed gameplay systems with resource management and crew roles, then validated the concept with a functional Unity prototype.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Unity</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">C#</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Game Design</span>
+              </div>
+            </div>
+            <a href="https://verdant-stick-b90.notion.site/154dded2f68f80919d5bd49488fe59a4?v=26f7fa54d0f64be0bd0b8403f79f22fd" target="_blank" rel="noopener" class="flex items-center gap-2 text-sm font-medium text-purple-400 hover:text-purple-300 transition-colors w-fit">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.14c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.448-.093-1.962-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.447-1.632z"/></svg>
+              View on Notion
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 ─ Library System Qt (info L / video R) -->
+      <div class="reveal bg-surface-800 rounded-2xl border border-surface-700 hover:border-teal-500/40 overflow-hidden transition-colors glow-sm">
+        <div class="grid lg:grid-cols-2 min-h-[300px]">
+          <div class="p-8 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-4">
+                <span class="px-2.5 py-1 bg-teal-500/10 text-teal-400 text-xs font-mono rounded-md border border-teal-500/20">Desktop App</span>
+                <span class="text-slate-600 text-xs">Oct – Dec 2024</span>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-3">Library System</h3>
+              <p class="text-slate-400 text-sm leading-relaxed mb-5">
+                GUI-based library system built with Qt and C++. Integrates user authentication, menu browsing, and order management with dynamic price display and account balance tracking.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Qt</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">C++</span>
+              </div>
+            </div>
+            <a href="https://github.com/Mooshaah/Library_system" target="_blank" rel="noopener" class="flex items-center gap-2 text-sm font-medium text-teal-400 hover:text-teal-300 transition-colors w-fit">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+              GitHub
+            </a>
+          </div>
+          <div class="relative bg-surface-900 border-t lg:border-t-0 lg:border-l border-surface-700 overflow-hidden">
+            <video id="v3" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" src="videos/library-qt.mp4" preload="none" playsinline></video>
+            <div id="o3" class="absolute inset-0 video-wrap flex flex-col items-center justify-center cursor-pointer select-none" onclick="play('v3','o3','b3','p3','t3')">
+              <div class="absolute inset-0 bg-gradient-to-br from-teal-900/40 to-surface-900/70"></div>
+              <div class="relative z-10 flex flex-col items-center gap-3 group/p">
+                <div class="w-[68px] h-[68px] rounded-full border-2 border-teal-400 bg-teal-500/20 flex items-center justify-center pl-1 transition-all duration-300 group-hover/p:scale-110 group-hover/p:bg-teal-500/35 group-hover/p:shadow-xl group-hover/p:shadow-teal-500/30">
+                  <svg class="w-8 h-8 text-teal-300" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+                <span class="text-slate-200 text-sm font-semibold">Watch Demo</span>
+              </div>
+            </div>
+            <div id="b3" class="absolute bottom-0 inset-x-0 hidden items-center gap-3 px-4 py-3 bg-surface-900/85 backdrop-blur-sm border-t border-surface-700">
+              <button onclick="togglePlay('v3','b3','p3')" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg id="p3" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
+              <div class="flex-1 h-1.5 bg-surface-700 rounded-full cursor-pointer" onclick="seek(event,'v3','g3')"><div id="g3" class="h-full bg-teal-400 rounded-full w-0"></div></div>
+              <span id="t3" class="text-xs font-mono text-slate-500 w-10 text-right tabular-nums">0:00</span>
+              <button onclick="muteToggle('v3',this)" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 ─ Library System with Database (video L / info R) -->
+      <div class="reveal bg-surface-800 rounded-2xl border border-surface-700 hover:border-amber-500/40 overflow-hidden transition-colors glow-sm">
+        <div class="grid lg:grid-cols-2 min-h-[300px]">
+          <div class="relative bg-surface-900 border-b lg:border-b-0 lg:border-r border-surface-700 overflow-hidden order-last lg:order-first">
+            <video id="v4" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" src="videos/library-db.mp4" preload="none" playsinline></video>
+            <div id="o4" class="absolute inset-0 video-wrap flex flex-col items-center justify-center cursor-pointer select-none" onclick="play('v4','o4','b4','p4','t4')">
+              <div class="absolute inset-0 bg-gradient-to-bl from-amber-900/40 to-surface-900/70"></div>
+              <div class="relative z-10 flex flex-col items-center gap-3 group/p">
+                <div class="w-[68px] h-[68px] rounded-full border-2 border-amber-400 bg-amber-500/20 flex items-center justify-center pl-1 transition-all duration-300 group-hover/p:scale-110 group-hover/p:bg-amber-500/35 group-hover/p:shadow-xl group-hover/p:shadow-amber-500/30">
+                  <svg class="w-8 h-8 text-amber-300" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+                <span class="text-slate-200 text-sm font-semibold">Watch Demo</span>
+              </div>
+            </div>
+            <div id="b4" class="absolute bottom-0 inset-x-0 hidden items-center gap-3 px-4 py-3 bg-surface-900/85 backdrop-blur-sm border-t border-surface-700">
+              <button onclick="togglePlay('v4','b4','p4')" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg id="p4" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
+              <div class="flex-1 h-1.5 bg-surface-700 rounded-full cursor-pointer" onclick="seek(event,'v4','g4')"><div id="g4" class="h-full bg-amber-400 rounded-full w-0"></div></div>
+              <span id="t4" class="text-xs font-mono text-slate-500 w-10 text-right tabular-nums">0:00</span>
+              <button onclick="muteToggle('v4',this)" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></button>
+            </div>
+          </div>
+          <div class="p-8 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-4">
+                <span class="px-2.5 py-1 bg-amber-500/10 text-amber-400 text-xs font-mono rounded-md border border-amber-500/20">Full-Stack</span>
+                <span class="text-slate-600 text-xs">Oct – Dec 2024</span>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-3">Library System with Database</h3>
+              <p class="text-slate-400 text-sm leading-relaxed mb-5">
+                Fully functional library management system using Java, MySQL, and JavaFX. Implements user authentication, book borrowing management, and complete database interaction.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Java</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">MySQL</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">JavaFX</span>
+              </div>
+            </div>
+            <a href="https://github.com/Mohamed-Shaarawy/Library-Management-System" target="_blank" rel="noopener" class="flex items-center gap-2 text-sm font-medium text-amber-400 hover:text-amber-300 transition-colors w-fit">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 ─ Scene Optimization (info L / video R) -->
+      <div class="reveal bg-surface-800 rounded-2xl border border-surface-700 hover:border-rose-500/40 overflow-hidden transition-colors glow-sm">
+        <div class="grid lg:grid-cols-2 min-h-[300px]">
+          <div class="p-8 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-4">
+                <span class="px-2.5 py-1 bg-rose-500/10 text-rose-400 text-xs font-mono rounded-md border border-rose-500/20">Optimization</span>
+                <span class="text-slate-600 text-xs">Nov – Dec 2024</span>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-3">Scene Optimization</h3>
+              <p class="text-slate-400 text-sm leading-relaxed mb-5">
+                Optimized Unity scenes to enhance performance and frame rates using light baking, dynamic batching, Level of Detail (LOD) techniques, and occlusion culling to reduce GPU workload.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Unity</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">LOD</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Occlusion Culling</span>
+              </div>
+            </div>
+            <span class="flex items-center gap-2 text-sm text-slate-600 w-fit select-none">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+              Not on GitHub yet
+            </span>
+          </div>
+          <div class="relative bg-surface-900 border-t lg:border-t-0 lg:border-l border-surface-700 overflow-hidden">
+            <video id="v5" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" src="videos/scene-optimization.mp4" preload="none" playsinline></video>
+            <div id="o5" class="absolute inset-0 video-wrap flex flex-col items-center justify-center cursor-pointer select-none" onclick="play('v5','o5','b5','p5','t5')">
+              <div class="absolute inset-0 bg-gradient-to-br from-rose-900/40 to-surface-900/70"></div>
+              <div class="relative z-10 flex flex-col items-center gap-3 group/p">
+                <div class="w-[68px] h-[68px] rounded-full border-2 border-rose-400 bg-rose-500/20 flex items-center justify-center pl-1 transition-all duration-300 group-hover/p:scale-110 group-hover/p:bg-rose-500/35 group-hover/p:shadow-xl group-hover/p:shadow-rose-500/30">
+                  <svg class="w-8 h-8 text-rose-300" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+                <span class="text-slate-200 text-sm font-semibold">Watch Demo</span>
+              </div>
+            </div>
+            <div id="b5" class="absolute bottom-0 inset-x-0 hidden items-center gap-3 px-4 py-3 bg-surface-900/85 backdrop-blur-sm border-t border-surface-700">
+              <button onclick="togglePlay('v5','b5','p5')" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg id="p5" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
+              <div class="flex-1 h-1.5 bg-surface-700 rounded-full cursor-pointer" onclick="seek(event,'v5','g5')"><div id="g5" class="h-full bg-rose-400 rounded-full w-0"></div></div>
+              <span id="t5" class="text-xs font-mono text-slate-500 w-10 text-right tabular-nums">0:00</span>
+              <button onclick="muteToggle('v5',this)" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 ─ Fighting Game Prototype (video L / info R) -->
+      <div class="reveal bg-surface-800 rounded-2xl border border-surface-700 hover:border-brand-500/40 overflow-hidden transition-colors glow-sm">
+        <div class="grid lg:grid-cols-2 min-h-[300px]">
+          <div class="relative bg-surface-900 border-b lg:border-b-0 lg:border-r border-surface-700 overflow-hidden order-last lg:order-first">
+            <video id="v6" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" src="videos/fighting-game.mp4" preload="none" playsinline></video>
+            <div id="o6" class="absolute inset-0 video-wrap flex flex-col items-center justify-center cursor-pointer select-none" onclick="play('v6','o6','b6','p6','t6')">
+              <div class="absolute inset-0 bg-gradient-to-bl from-violet-900/40 to-surface-900/70"></div>
+              <div class="relative z-10 flex flex-col items-center gap-3 group/p">
+                <div class="w-[68px] h-[68px] rounded-full border-2 border-brand-400 bg-brand-500/20 flex items-center justify-center pl-1 transition-all duration-300 group-hover/p:scale-110 group-hover/p:bg-brand-500/35 group-hover/p:shadow-xl group-hover/p:shadow-brand-500/30">
+                  <svg class="w-8 h-8 text-brand-300" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+                <span class="text-slate-200 text-sm font-semibold">Watch Demo</span>
+              </div>
+            </div>
+            <div id="b6" class="absolute bottom-0 inset-x-0 hidden items-center gap-3 px-4 py-3 bg-surface-900/85 backdrop-blur-sm border-t border-surface-700">
+              <button onclick="togglePlay('v6','b6','p6')" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg id="p6" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
+              <div class="flex-1 h-1.5 bg-surface-700 rounded-full cursor-pointer" onclick="seek(event,'v6','g6')"><div id="g6" class="h-full bg-brand-400 rounded-full w-0"></div></div>
+              <span id="t6" class="text-xs font-mono text-slate-500 w-10 text-right tabular-nums">0:00</span>
+              <button onclick="muteToggle('v6',this)" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></button>
+            </div>
+          </div>
+          <div class="p-8 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-4">
+                <span class="px-2.5 py-1 bg-brand-500/10 text-brand-400 text-xs font-mono rounded-md border border-brand-500/20">UE5 Game</span>
+                <span class="text-slate-600 text-xs">Mar – May 2025</span>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-3">Fighting Game Prototype</h3>
+              <p class="text-slate-400 text-sm leading-relaxed mb-5">
+                Fighting game prototype featuring character movement, combat mechanics, and AI behavior. Implements character animations and special moves via UE5's animation system, with a full settings UI and pause menu.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Unreal Engine 5</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">C++</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Blueprints</span>
+              </div>
+            </div>
+            <span class="flex items-center gap-2 text-sm text-slate-600 w-fit select-none">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+              Not on GitHub yet
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7 ─ Arkanoid Game (info L / video R) -->
+      <div class="reveal bg-surface-800 rounded-2xl border border-surface-700 hover:border-purple-500/40 overflow-hidden transition-colors glow-sm">
+        <div class="grid lg:grid-cols-2 min-h-[300px]">
+          <div class="p-8 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-4">
+                <span class="px-2.5 py-1 bg-purple-500/10 text-purple-400 text-xs font-mono rounded-md border border-purple-500/20">2D Game</span>
+                <span class="text-slate-600 text-xs">Apr – May 2025</span>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-3">Arkanoid Game</h3>
+              <p class="text-slate-400 text-sm leading-relaxed mb-5">
+                2D Arkanoid game implementing ball physics, paddle control, and a scoring and health system. Optimized for responsiveness across multiple screen sizes.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Raylib</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">C++</span>
+              </div>
+            </div>
+            <span class="flex items-center gap-2 text-sm text-slate-600 w-fit select-none">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+              Not on GitHub yet
+            </span>
+          </div>
+          <div class="relative bg-surface-900 border-t lg:border-t-0 lg:border-l border-surface-700 overflow-hidden">
+            <video id="v7" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" src="videos/arkanoid.mp4" preload="none" playsinline></video>
+            <div id="o7" class="absolute inset-0 video-wrap flex flex-col items-center justify-center cursor-pointer select-none" onclick="play('v7','o7','b7','p7','t7')">
+              <div class="absolute inset-0 bg-gradient-to-br from-purple-900/40 to-surface-900/70"></div>
+              <div class="relative z-10 flex flex-col items-center gap-3 group/p">
+                <div class="w-[68px] h-[68px] rounded-full border-2 border-purple-400 bg-purple-500/20 flex items-center justify-center pl-1 transition-all duration-300 group-hover/p:scale-110 group-hover/p:bg-purple-500/35 group-hover/p:shadow-xl group-hover/p:shadow-purple-500/30">
+                  <svg class="w-8 h-8 text-purple-300" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+                <span class="text-slate-200 text-sm font-semibold">Watch Demo</span>
+              </div>
+            </div>
+            <div id="b7" class="absolute bottom-0 inset-x-0 hidden items-center gap-3 px-4 py-3 bg-surface-900/85 backdrop-blur-sm border-t border-surface-700">
+              <button onclick="togglePlay('v7','b7','p7')" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg id="p7" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
+              <div class="flex-1 h-1.5 bg-surface-700 rounded-full cursor-pointer" onclick="seek(event,'v7','g7')"><div id="g7" class="h-full bg-purple-400 rounded-full w-0"></div></div>
+              <span id="t7" class="text-xs font-mono text-slate-500 w-10 text-right tabular-nums">0:00</span>
+              <button onclick="muteToggle('v7',this)" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8 ─ News App (video L / info R) -->
+      <div class="reveal bg-surface-800 rounded-2xl border border-surface-700 hover:border-teal-500/40 overflow-hidden transition-colors glow-sm">
+        <div class="grid lg:grid-cols-2 min-h-[300px]">
+          <div class="relative bg-surface-900 border-b lg:border-b-0 lg:border-r border-surface-700 overflow-hidden order-last lg:order-first">
+            <video id="v8" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" src="videos/news-app.mp4" preload="none" playsinline></video>
+            <div id="o8" class="absolute inset-0 video-wrap flex flex-col items-center justify-center cursor-pointer select-none" onclick="play('v8','o8','b8','p8','t8')">
+              <div class="absolute inset-0 bg-gradient-to-bl from-teal-900/40 to-surface-900/70"></div>
+              <div class="relative z-10 flex flex-col items-center gap-3 group/p">
+                <div class="w-[68px] h-[68px] rounded-full border-2 border-teal-400 bg-teal-500/20 flex items-center justify-center pl-1 transition-all duration-300 group-hover/p:scale-110 group-hover/p:bg-teal-500/35 group-hover/p:shadow-xl group-hover/p:shadow-teal-500/30">
+                  <svg class="w-8 h-8 text-teal-300" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+                <span class="text-slate-200 text-sm font-semibold">Watch Demo</span>
+              </div>
+            </div>
+            <div id="b8" class="absolute bottom-0 inset-x-0 hidden items-center gap-3 px-4 py-3 bg-surface-900/85 backdrop-blur-sm border-t border-surface-700">
+              <button onclick="togglePlay('v8','b8','p8')" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg id="p8" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
+              <div class="flex-1 h-1.5 bg-surface-700 rounded-full cursor-pointer" onclick="seek(event,'v8','g8')"><div id="g8" class="h-full bg-teal-400 rounded-full w-0"></div></div>
+              <span id="t8" class="text-xs font-mono text-slate-500 w-10 text-right tabular-nums">0:00</span>
+              <button onclick="muteToggle('v8',this)" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></button>
+            </div>
+          </div>
+          <div class="p-8 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-4">
+                <span class="px-2.5 py-1 bg-teal-500/10 text-teal-400 text-xs font-mono rounded-md border border-teal-500/20">Mobile App</span>
+                <span class="text-slate-600 text-xs">Apr – May 2025</span>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-3">News App</h3>
+              <p class="text-slate-400 text-sm leading-relaxed mb-5">
+                Android news app with integrated REST API for browsing headlines, searching, filtering by category, and managing favourites. Responsive design suitable for various screen sizes.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Kotlin</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Retrofit</span>
+              </div>
+            </div>
+            <a href="https://github.com/Mohamed-Shaarawy/News-APP" target="_blank" rel="noopener" class="flex items-center gap-2 text-sm font-medium text-teal-400 hover:text-teal-300 transition-colors w-fit">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9 ─ Nearby Explorer App (info L / video R) -->
+      <div class="reveal bg-surface-800 rounded-2xl border border-surface-700 hover:border-amber-500/40 overflow-hidden transition-colors glow-sm">
+        <div class="grid lg:grid-cols-2 min-h-[300px]">
+          <div class="p-8 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-4">
+                <span class="px-2.5 py-1 bg-amber-500/10 text-amber-400 text-xs font-mono rounded-md border border-amber-500/20">Mobile App</span>
+                <span class="text-slate-600 text-xs">Apr – May 2025</span>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-3">Nearby Explorer App</h3>
+              <p class="text-slate-400 text-sm leading-relaxed mb-5">
+                Android app integrated with the Overpass API for real-time user location tracking and point-of-interest discovery. Features a responsive UI adaptable to different screen sizes.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Kotlin</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Retrofit</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Overpass API</span>
+              </div>
+            </div>
+            <span class="flex items-center gap-2 text-sm text-slate-600 w-fit select-none">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+              Not on GitHub yet
+            </span>
+          </div>
+          <div class="relative bg-surface-900 border-t lg:border-t-0 lg:border-l border-surface-700 overflow-hidden">
+            <video id="v9" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" src="videos/nearby-explorer.mp4" preload="none" playsinline></video>
+            <div id="o9" class="absolute inset-0 video-wrap flex flex-col items-center justify-center cursor-pointer select-none" onclick="play('v9','o9','b9','p9','t9')">
+              <div class="absolute inset-0 bg-gradient-to-br from-amber-900/40 to-surface-900/70"></div>
+              <div class="relative z-10 flex flex-col items-center gap-3 group/p">
+                <div class="w-[68px] h-[68px] rounded-full border-2 border-amber-400 bg-amber-500/20 flex items-center justify-center pl-1 transition-all duration-300 group-hover/p:scale-110 group-hover/p:bg-amber-500/35 group-hover/p:shadow-xl group-hover/p:shadow-amber-500/30">
+                  <svg class="w-8 h-8 text-amber-300" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+                <span class="text-slate-200 text-sm font-semibold">Watch Demo</span>
+              </div>
+            </div>
+            <div id="b9" class="absolute bottom-0 inset-x-0 hidden items-center gap-3 px-4 py-3 bg-surface-900/85 backdrop-blur-sm border-t border-surface-700">
+              <button onclick="togglePlay('v9','b9','p9')" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg id="p9" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
+              <div class="flex-1 h-1.5 bg-surface-700 rounded-full cursor-pointer" onclick="seek(event,'v9','g9')"><div id="g9" class="h-full bg-amber-400 rounded-full w-0"></div></div>
+              <span id="t9" class="text-xs font-mono text-slate-500 w-10 text-right tabular-nums">0:00</span>
+              <button onclick="muteToggle('v9',this)" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10 ─ Echos of You — Graduation (video L / info R) -->
+      <div class="reveal bg-surface-800 rounded-2xl border border-surface-700 hover:border-rose-500/40 overflow-hidden transition-colors glow-sm">
+        <div class="grid lg:grid-cols-2 min-h-[300px]">
+          <div class="relative bg-surface-900 border-b lg:border-b-0 lg:border-r border-surface-700 overflow-hidden order-last lg:order-first">
+            <video id="v10" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" src="videos/echos-of-you.mp4" preload="none" playsinline></video>
+            <div id="o10" class="absolute inset-0 video-wrap flex flex-col items-center justify-center cursor-pointer select-none" onclick="play('v10','o10','b10','p10','t10')">
+              <div class="absolute inset-0 bg-gradient-to-bl from-rose-900/40 to-surface-900/70"></div>
+              <div class="relative z-10 flex flex-col items-center gap-3 group/p">
+                <div class="w-[68px] h-[68px] rounded-full border-2 border-rose-400 bg-rose-500/20 flex items-center justify-center pl-1 transition-all duration-300 group-hover/p:scale-110 group-hover/p:bg-rose-500/35 group-hover/p:shadow-xl group-hover/p:shadow-rose-500/30">
+                  <svg class="w-8 h-8 text-rose-300" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+                <span class="text-slate-200 text-sm font-semibold">Watch Demo</span>
+              </div>
+            </div>
+            <div id="b10" class="absolute bottom-0 inset-x-0 hidden items-center gap-3 px-4 py-3 bg-surface-900/85 backdrop-blur-sm border-t border-surface-700">
+              <button onclick="togglePlay('v10','b10','p10')" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg id="p10" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
+              <div class="flex-1 h-1.5 bg-surface-700 rounded-full cursor-pointer" onclick="seek(event,'v10','g10')"><div id="g10" class="h-full bg-rose-400 rounded-full w-0"></div></div>
+              <span id="t10" class="text-xs font-mono text-slate-500 w-10 text-right tabular-nums">0:00</span>
+              <button onclick="muteToggle('v10',this)" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></button>
+            </div>
+          </div>
+          <div class="p-8 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-4">
+                <span class="px-2.5 py-1 bg-rose-500/10 text-rose-400 text-xs font-mono rounded-md border border-rose-500/20">Graduation Project</span>
+                <span class="text-slate-600 text-xs">Oct 2025 – Feb 2026</span>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-3">Echos of You</h3>
+              <p class="text-rose-400/70 text-xs font-medium mb-3">Team Lead · Gameplay Programmer · Art</p>
+              <p class="text-slate-400 text-sm leading-relaxed mb-5">
+                Mobile story-driven puzzle game. Led team development, designed character camera systems, authored custom shaders, and developed VFX and Shader Graph effects for atmospheric storytelling. Optimised texture workflow with AORM map separation for Unity's material pipeline.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Unity</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">C#</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Shader Graph</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">VFX Graph</span>
+              </div>
+            </div>
+            <a href="https://github.com/Mohamed-Shaarawy/Echoes-of-You" target="_blank" rel="noopener" class="flex items-center gap-2 text-sm font-medium text-rose-400 hover:text-rose-300 transition-colors w-fit">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11 ─ Mirage — Graduation / In Progress (info L / video R) -->
+      <div class="reveal bg-surface-800 rounded-2xl border border-violet-500/40 overflow-hidden transition-colors" style="box-shadow:0 0 30px rgba(139,92,246,.12)">
+        <div class="grid lg:grid-cols-2 min-h-[300px]">
+          <div class="p-8 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-4">
+                <span class="px-2.5 py-1 bg-violet-500/10 text-violet-400 text-xs font-mono rounded-md border border-violet-500/20">Graduation Project</span>
+                <span class="inline-flex items-center gap-1.5 text-xs text-green-400 font-medium">
+                  <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>In Progress
+                </span>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-3">Mirage</h3>
+              <p class="text-violet-400/70 text-xs font-medium mb-3">Team Lead · Gameplay Programmer · Art · Animation</p>
+              <p class="text-slate-400 text-sm leading-relaxed mb-5">
+                Tactical stealth PC game with motion matching, traversal, and AI interactions. Integrated a dynamic cover system, built reusable C++ gameplay systems (pickups, grenades, sliding), and created gameplay-driven animations via Control Rig and Sequencer. Optimised with Nanite, culling, and lighting overhead reduction.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Unreal Engine</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">C++</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Blueprints</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Control Rig</span>
+                <span class="px-2.5 py-1 bg-surface-700 text-slate-400 text-xs rounded-md">Sequencer</span>
+              </div>
+            </div>
+            <span class="flex items-center gap-2 text-sm text-slate-600 w-fit select-none">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              Perforce (private)
+            </span>
+          </div>
+          <div class="relative bg-surface-900 border-t lg:border-t-0 lg:border-l border-surface-700 overflow-hidden">
+            <video id="v11" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" src="videos/mirage.mp4" preload="none" playsinline></video>
+            <div id="o11" class="absolute inset-0 video-wrap flex flex-col items-center justify-center cursor-pointer select-none" onclick="play('v11','o11','b11','p11','t11')">
+              <div class="absolute inset-0 bg-gradient-to-br from-violet-900/40 to-surface-900/70"></div>
+              <div class="relative z-10 flex flex-col items-center gap-3 group/p">
+                <div class="w-[68px] h-[68px] rounded-full border-2 border-violet-400 bg-violet-500/20 flex items-center justify-center pl-1 transition-all duration-300 group-hover/p:scale-110 group-hover/p:bg-violet-500/35 group-hover/p:shadow-xl group-hover/p:shadow-violet-500/30">
+                  <svg class="w-8 h-8 text-violet-300" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+                <span class="text-slate-200 text-sm font-semibold">Watch Demo</span>
+              </div>
+            </div>
+            <div id="b11" class="absolute bottom-0 inset-x-0 hidden items-center gap-3 px-4 py-3 bg-surface-900/85 backdrop-blur-sm border-t border-surface-700">
+              <button onclick="togglePlay('v11','b11','p11')" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg id="p11" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
+              <div class="flex-1 h-1.5 bg-surface-700 rounded-full cursor-pointer" onclick="seek(event,'v11','g11')"><div id="g11" class="h-full bg-violet-400 rounded-full w-0"></div></div>
+              <span id="t11" class="text-xs font-mono text-slate-500 w-10 text-right tabular-nums">0:00</span>
+              <button onclick="muteToggle('v11',this)" class="text-slate-300 hover:text-white transition-colors flex-shrink-0"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div><!-- /space-y-10 -->
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═════════════════════════════════════════════════ -->
+<section id="contact" class="py-24">
+  <div class="max-w-2xl mx-auto px-6 text-center">
+    <div class="reveal">
+      <p class="font-mono text-brand-400 text-sm mb-3">04 // Contact</p>
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Let's Work Together</h2>
+      <p class="text-slate-400 leading-relaxed mb-10">
+        Whether you have a project in mind, a role you'd like to fill, or just want to say
+        hello — my inbox is always open.
+      </p>
+
+      <div class="grid sm:grid-cols-3 gap-4 mb-10">
+        <a href="mailto:mohamedelshaaararwy@gmail.com"
+           class="flex flex-col items-center gap-3 p-5 bg-surface-800 rounded-2xl border border-surface-700 hover:border-brand-500/40 transition-all hover:-translate-y-1">
+          <div class="w-10 h-10 bg-brand-500/10 rounded-xl flex items-center justify-center">
+            <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="text-xs text-slate-500 mb-0.5">Email</div>
+            <div class="text-sm font-medium text-slate-300 break-all">mohamedelshaaararwy@gmail.com</div>
+          </div>
+        </a>
+
+        <a href="https://linkedin.com/in/mohamedelshaarawyy" target="_blank" rel="noopener"
+           class="flex flex-col items-center gap-3 p-5 bg-surface-800 rounded-2xl border border-surface-700 hover:border-blue-500/40 transition-all hover:-translate-y-1">
+          <div class="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center">
+            <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="text-xs text-slate-500 mb-0.5">LinkedIn</div>
+            <div class="text-sm font-medium text-slate-300">mohamedelshaarawyy</div>
+          </div>
+        </a>
+
+        <a href="https://github.com/Mohamed-Shaarawy" target="_blank" rel="noopener"
+           class="flex flex-col items-center gap-3 p-5 bg-surface-800 rounded-2xl border border-surface-700 hover:border-slate-500/40 transition-all hover:-translate-y-1">
+          <div class="w-10 h-10 bg-slate-500/10 rounded-xl flex items-center justify-center">
+            <svg class="w-5 h-5 text-slate-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+          </div>
+          <div>
+            <div class="text-xs text-slate-500 mb-0.5">GitHub</div>
+            <div class="text-sm font-medium text-slate-300">Mohamed-Shaarawy</div>
+          </div>
+        </a>
+      </div>
+
+      <a href="mailto:mohamedelshaaararwy@gmail.com"
+         class="inline-flex items-center gap-2 px-8 py-3.5 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-xl transition-all hover:scale-105 hover:shadow-lg hover:shadow-brand-500/25">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        </svg>
+        Send Me an Email
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ══════════════════════════════════════════════════ -->
+<footer class="border-t border-surface-800 py-8">
+  <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-600">
+    <p>&copy; 2026 Mohamed El-shaarawy.</p>
+    <a href="#hero" class="hover:text-slate-400 transition-colors flex items-center gap-1.5">
+      Back to top
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+      </svg>
+    </a>
+  </div>
+</footer>
+
+<!-- ═══ SCRIPTS ══════════════════════════════════════════════════ -->
+<script>
+  // Nav glass effect on scroll
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    const s = window.scrollY > 20;
+    nav.classList.toggle('bg-surface-900/95', s);
+    nav.classList.toggle('backdrop-blur-md',  s);
+    nav.classList.toggle('border-b',          s);
+    nav.classList.toggle('border-surface-800',s);
+    nav.classList.toggle('shadow-xl',         s);
+  });
+
+  // Mobile menu
+  document.getElementById('menu-btn').addEventListener('click', () =>
+    document.getElementById('mobile-menu').classList.toggle('hidden')
+  );
+  function closeMenu() { document.getElementById('mobile-menu').classList.add('hidden'); }
+
+  // Scroll reveal
+  new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.08 }).observe.call(
+    new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.08 }),
+    ...document.querySelectorAll('.reveal')
+  );
+
+  // Simpler reveal setup
+  (() => {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  })();
+
+  // ── Video helpers ──────────────────────────────────────────────
+  function fmt(s) {
+    return Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2,'0');
+  }
+
+  function play(vid, ovr, bar, btn, tim) {
+    const v = document.getElementById(vid);
+    const o = document.getElementById(ovr);
+    const b = document.getElementById(bar);
+
+    v.classList.remove('opacity-0');
+    o.style.opacity = '0';
+    o.style.pointerEvents = 'none';
+    b.classList.remove('hidden');
+    b.classList.add('flex');
+    v.play();
+
+    v.ontimeupdate = () => {
+      const pct = v.duration ? (v.currentTime / v.duration * 100) : 0;
+      document.getElementById(bar.replace('b','g')).style.width = pct + '%';
+      document.getElementById(tim).textContent = fmt(v.currentTime);
+    };
+
+    v.onended = () => {
+      o.style.opacity = '1';
+      o.style.pointerEvents = 'auto';
+      b.classList.add('hidden');
+      b.classList.remove('flex');
+      v.classList.add('opacity-0');
+      v.currentTime = 0;
+      document.getElementById(bar.replace('b','g')).style.width = '0';
+      document.getElementById(tim).textContent = '0:00';
+    };
+  }
+
+  function togglePlay(vid, bar, btn) {
+    const v = document.getElementById(vid);
+    const ic = document.getElementById(btn);
+    if (v.paused) {
+      v.play();
+      ic.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+    } else {
+      v.pause();
+      ic.innerHTML = '<path d="M8 5v14l11-7z"/>';
+    }
+  }
+
+  function seek(e, vid, prog) {
+    const v = document.getElementById(vid);
+    const r = e.currentTarget.getBoundingClientRect();
+    v.currentTime = ((e.clientX - r.left) / r.width) * v.duration;
+  }
+
+  function muteToggle(vid, btn) {
+    const v = document.getElementById(vid);
+    v.muted = !v.muted;
+    btn.style.opacity = v.muted ? '0.35' : '1';
+  }
+
+  // Pause when scrolled out of view
+  (() => {
+    const obs = new IntersectionObserver(entries =>
+      entries.forEach(e => { if (!e.isIntersecting) e.target.pause(); }), { threshold: 0.1 });
+    document.querySelectorAll('video').forEach(v => obs.observe(v));
+  })();
+</script>
+</body>
+</html>
